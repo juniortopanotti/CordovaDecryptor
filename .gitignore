@@ -26,7 +26,7 @@ target/
 out/
 tmp/
 
-
+.settings/
 
 ### Default GitHub options for Java ###
 *.class
