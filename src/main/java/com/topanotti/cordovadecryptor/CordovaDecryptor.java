@@ -26,12 +26,12 @@ public class CordovaDecryptor {
 	public static File folder = new File("D:\\projetos\\Truasfalca\\www");
 	private static final String CRYPT_IV = "SdleC2P8j62ZvKDi";
 	private static final String CRYPT_KEY = "IQmbDb1kdZd4P2b9KMX7Kjv/KVOdxjxr";
-	private static final String[] INCLUDE_FILES = new String[]{"html", "htm", "js", "css"};
-	
+	private static final String[] INCLUDE_FILES = new String[] { "html", "htm", "js", "css" };
+
 	public static void main(String[] args) {
 		decryptIt();
 	}
-	
+
 	public static void decryptIt() {
 		System.out.println("Iniciando o processo de descriptografia na pasta " + folder.getName());
 		try {
@@ -40,42 +40,42 @@ public class CordovaDecryptor {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * @param folder
-     * @throws IOException 
-     */
+	 * @throws IOException
+	 */
 	public static void fileCatcher(final File folder) throws IOException {
-	    for (final File fileEntry : folder.listFiles()) {
-	        if (fileEntry.isDirectory()) {
-	        	System.out.println("\n\n********* " + folder.getName() + " *********\n\n");
-	        	fileCatcher(fileEntry);
-	        } else {
-	        	Boolean canDecripyt = hasMatch(FilenameUtils.getExtension(fileEntry.getName()), INCLUDE_FILES);
-	        	if (canDecripyt) {
-	        		decryptFile(fileEntry);
-	        	}
-	        }
-	    }
+		for (final File fileEntry : folder.listFiles()) {
+			if (fileEntry.isDirectory()) {
+				System.out.println("\n\n********* " + folder.getName() + " *********\n\n");
+				fileCatcher(fileEntry);
+			} else {
+				Boolean canDecripyt = hasMatch(FilenameUtils.getExtension(fileEntry.getName()), INCLUDE_FILES);
+				if (canDecripyt) {
+					decryptFile(fileEntry);
+				}
+			}
+		}
 	}
 
 	/**
 	 * @param File
-     * @throws IOException 
-     */
+	 * @throws IOException
+	 */
 	public static void decryptFile(final File file) throws IOException {
-        byte[] bytes = getFileContent(file);
-        if (bytes != null) {
-	        String decryptedContent = decryptFileContent(bytes);
+		byte[] bytes = getFileContent(file);
+		if (bytes != null) {
+			String decryptedContent = decryptFileContent(bytes);
 			writeInFile(file, decryptedContent);
-        }
+		}
 	}
-	
+
 	/**
 	 * @param Array of bytes[] from file
-     * @return Decrypted content of file as String
-     * @throws IOException 
-     */
+	 * @return Decrypted content of file as String
+	 * @throws IOException
+	 */
 	public static String decryptFileContent(byte[] bytes) {
 		Security.setProperty("crypto.policy", "unlimited");
 		ByteArrayOutputStream bos = null;
@@ -90,36 +90,36 @@ public class CordovaDecryptor {
 		}
 		return bos.toString();
 	}
-	
+
 	/**
 	 * @param File
-     * @return Array of bytes with file content
-     * @throws IOException 
-     */
+	 * @return Array of bytes with file content
+	 * @throws IOException
+	 */
 	public static byte[] getFileContent(final File file) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-    	StringBuilder strb = new StringBuilder();
-        while (true) {
-            String line = br.readLine();
-            if (line == null) {
-                break;
-            }
-            strb.append(line);
-        }
-        br.close();
-        byte[] bytez = null;
-        try {
-        	bytez = Base64.getDecoder().decode(strb.toString());
-        } catch (Exception ex) {
-        	System.out.println(file.getName() + " já está descriptografado!");
-        }
-        return bytez;
+		StringBuilder strb = new StringBuilder();
+		while (true) {
+			String line = br.readLine();
+			if (line == null) {
+				break;
+			}
+			strb.append(line);
+		}
+		br.close();
+		byte[] bytez = null;
+		try {
+			bytez = Base64.getDecoder().decode(strb.toString());
+		} catch (Exception ex) {
+			System.out.println(file.getName() + " já está descriptografado!");
+		}
+		return bytez;
 	}
-	
+
 	/**
 	 * @param File
 	 * @param File content as String to write in
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public static void writeInFile(final File file, String text) throws IOException {
 		FileWriter fileWriter = new FileWriter(file, false);
@@ -127,19 +127,19 @@ public class CordovaDecryptor {
 		fileWriter.close();
 		System.out.println(file.getName() + " - Desencriptado com sucesso!");
 	}
-	
+
 	/**
 	 * @param Extension of file
-	 * @param Array of allowed extensions
+	 * @param Array     of allowed extensions
 	 * @return Boolean
-     * @throws IOException 
-     */
+	 * @throws IOException
+	 */
 	private static boolean hasMatch(String extension, String[] regexArr) {
-        for (String regex : regexArr) {
-            if (extension.equals(regex)) {
-                return true;
-            }
-        }
-        return false;
-    }
+		for (String regex : regexArr) {
+			if (extension.equals(regex)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
