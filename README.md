@@ -4,5 +4,5 @@ Utilitário para descriptografia de arquivos criptografados pelo plugin "cordova
 ## Executar
 Localize no projeto as constantes CRYPT_IV e CRYPT_KEY, substitua no projeto, sete o diretório onde encontra os arquivos e execute: 
 
-`mvn exec:java`
+`mvn clean compile exec:java`
 
